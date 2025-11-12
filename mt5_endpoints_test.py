@@ -139,6 +139,5 @@ def test_all_documented():
     test_misc()
     print("\n=== SESSION/LIFECYCLE ===")
     test_session()
-    print("\nDone. Inspect OK/WARN/ERR et payloads ci-dessus pour chaque endpoint.")
-
+    
 test_all_documented()
