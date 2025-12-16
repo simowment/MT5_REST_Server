@@ -8,6 +8,9 @@ This document provides complete documentation for all MT5 REST API endpoints bas
 http://localhost:5000/api
 ```
 
+## Important Note
+**All endpoints use POST method only** - This API does not support GET requests. All requests must be sent as POST with JSON parameters in the request body.
+
 ## Response Format
 All endpoints return JSON in the following format:
 
@@ -30,7 +33,7 @@ All endpoints return JSON in the following format:
 ### 1. BASIC INFORMATION
 
 #### version
-**Method:** GET `/api/version`
+**Method:** POST `/api/version`
 **Description:** Returns MT5 terminal version information
 **Response:**
 ```json
@@ -43,7 +46,7 @@ All endpoints return JSON in the following format:
 - **Date:** Last update date
 
 #### terminal_info
-**Method:** GET `/api/terminal_info`
+**Method:** POST `/api/terminal_info`
 **Description:** Returns detailed terminal information
 **Response:**
 ```json
@@ -66,7 +69,7 @@ All endpoints return JSON in the following format:
 ```
 
 #### account_info
-**Method:** GET `/api/account_info`
+**Method:** POST `/api/account_info`
 **Description:** Returns current trading account information
 **Response:**
 ```json
@@ -109,7 +112,7 @@ All endpoints return JSON in the following format:
 ### 2. SYMBOLS MANAGEMENT
 
 #### symbols_total
-**Method:** GET `/api/symbols_total`
+**Method:** POST `/api/symbols_total`
 **Description:** Returns total number of available symbols
 **Response:**
 ```json
@@ -286,7 +289,7 @@ All endpoints return JSON in the following format:
 ### 4. ORDERS AND POSITIONS
 
 #### orders_total
-**Method:** GET `/api/orders_total`
+**Method:** POST `/api/orders_total`
 **Description:** Returns number of active pending orders
 **Response:**
 ```json
@@ -296,7 +299,7 @@ All endpoints return JSON in the following format:
 ```
 
 #### orders_get
-**Method:** GET `/api/orders_get`
+**Method:** POST `/api/orders_get`
 **Description:** Returns array of pending orders
 **Response:**
 ```json
@@ -307,7 +310,7 @@ All endpoints return JSON in the following format:
 *(Empty when no pending orders)*
 
 #### positions_total
-**Method:** GET `/api/positions_total`
+**Method:** POST `/api/positions_total`
 **Description:** Returns number of open positions
 **Response:**
 ```json
@@ -317,7 +320,7 @@ All endpoints return JSON in the following format:
 ```
 
 #### positions_get
-**Method:** GET `/api/positions_get`
+**Method:** POST `/api/positions_get`
 **Description:** Returns array of open positions
 **Response:**
 ```json
@@ -359,7 +362,7 @@ All endpoints return JSON in the following format:
       "price_stoplimit": 0.0,
       "reason": 2,
       "request_id": 0,
-      "retcode": 10004,
+      "retcode": 10009,
       "sl": 0.0,
       "status": 1,
       "symbol": "XAUUSD",
@@ -409,7 +412,7 @@ All endpoints return JSON in the following format:
       "price": 105225.43,
       "profit": 0.0,
       "reason": 2,
-      "retcode": 10004,
+      "retcode": 10009,
       "sl": 0.0,
       "swap": 0.0,
       "symbol": "XAUUSD",
@@ -560,7 +563,7 @@ All endpoints return JSON in the following format:
 ### 9. SYSTEM
 
 #### last_error
-**Method:** GET `/api/last_error`
+**Method:** POST `/api/last_error`
 **Description:** Returns last MT5 error information
 **Response:**
 ```json
@@ -572,7 +575,7 @@ All endpoints return JSON in the following format:
 ### 10. SESSION MANAGEMENT
 
 #### initialize
-**Method:** GET `/api/initialize`
+**Method:** POST `/api/initialize`
 **Description:** Initializes MT5 terminal connection
 **Response:**
 ```json
@@ -582,7 +585,7 @@ All endpoints return JSON in the following format:
 ```
 
 #### login
-**Method:** GET `/api/login`
+**Method:** POST `/api/login`
 **Description:** Login to trading account
 **Response:**
 ```json
@@ -593,7 +596,7 @@ All endpoints return JSON in the following format:
 *(False for demo account or already logged in)*
 
 #### shutdown
-**Method:** GET `/api/shutdown`
+**Method:** POST `/api/shutdown`
 **Description:** Shuts down MT5 terminal connection
 **Response:**
 ```json
@@ -605,7 +608,7 @@ All endpoints return JSON in the following format:
 ## Error Codes Reference
 
 - **1:** Success
-- **10004:** TRADE_RETCODE_DONE
+- **10009:** TRADE_RETCODE_DONE
 - **10016:** TRADE_RETCODE_INVALID_VOLUME
 - **10017:** TRADE_RETCODE_INVALID_PRICE
 
@@ -623,29 +626,29 @@ All endpoints return JSON in the following format:
 ### Get Live Market Data
 ```bash
 # 1. Add to market book
-POST /api/market_book_add ["EURUSD"]
+curl -X POST http://localhost:5000/api/market_book_add -H "Content-Type: application/json" -d '["EURUSD"]'
 
 # 2. Get depth data (poll every 500ms)
-POST /api/market_book_get ["EURUSD"]
+curl -X POST http://localhost:5000/api/market_book_get -H "Content-Type: application/json" -d '["EURUSD"]'
 
 # 3. Release when done
-POST /api/market_book_release ["EURUSD"]
+curl -X POST http://localhost:5000/api/market_book_release -H "Content-Type: application/json" -d '["EURUSD"]'
 ```
 
 ### Get Historical Data
 ```bash
 # Get recent ticks
-POST /api/copy_ticks_range ["EURUSD", <start_time>, <end_time>, 1]
+curl -X POST http://localhost:5000/api/copy_ticks_range -H "Content-Type: application/json" -d '["EURUSD", <start_time>, <end_time>, 1]'
 
 # Get candles
-POST /api/copy_rates_range ["EURUSD", 1, <start_time>, <end_time>]
+curl -X POST http://localhost:5000/api/copy_rates_range -H "Content-Type: application/json" -d '["EURUSD", 1, <start_time>, <end_time>]'
 ```
 
 ### Check Account Status
 ```bash
-GET /api/account_info
-GET /api/positions_get
-GET /api/orders_get
+curl -X POST http://localhost:5000/api/account_info
+curl -X POST http://localhost:5000/api/positions_get
+curl -X POST http://localhost:5000/api/orders_get
 ```
 
 ## Notes
